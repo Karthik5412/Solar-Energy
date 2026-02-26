@@ -6,6 +6,10 @@ from datetime import timedelta,  datetime
 import joblib
 import requests
 
+st.set_page_config(page_title='Solar', page_icon='🌞', layout='wide')
+
+st.title('Solar Production Predictor')
+
 date = st.sidebar.date_input('Enter date :')
 time = st.sidebar.time_input('Enter time :').strftime('%H')
 
@@ -20,6 +24,7 @@ time_zone = r'&timezone=Asia%2FKolkata'
 url = base_url+date_range + time_zone
 
 response = requests.get(url).json()
+st.success(response)
 
 NOCT = 45.0
 current = response['hourly']
@@ -48,5 +53,19 @@ df = pd.DataFrame(data)
 
 pred = pipeline.predict(df)[0]
 pred = list(pred)
-st.success(pred[0 :])
-# st.success(f'DC_POWER : {pred[0]} DAY_DC_POWER : {pred[1]}')
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.subheader('Temperatur ')
+    st.subheader(f'{temp} °C' )
+with col2 :
+    st.subheader('Irradiation ')
+    st.subheader(f'{irr} W/m²' )
+with col3 :
+    st.subheader('Module Temperature ')
+    st.subheader(f'{module}' )
+    
+
+# st.success()
+# st.success()
