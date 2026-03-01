@@ -21,6 +21,10 @@ st.markdown( '''<style>
                 box-shadow : 0 4px 6px rgba(0,0,0,0.1);
                 padding : 10px;
             }
+            [data-testid = 'stSidebar'] {
+                background : linear-gradient(135deg, #fceABB 0%, #f8b500 100%);
+                color : #CD5B45;
+            }
             
             </style>
             ''',unsafe_allow_html=True
@@ -83,6 +87,17 @@ with col3 :
     st.subheader('Module Temperature ')
     st.subheader(f'{module} °C' )
     
+if pred[0] < 4500 :
+    dc_color = '#1A237E'
+    
+elif pred[0] > 4500 and pred[0] < 10000 :
+    dc_color = '#2E7D32'
+else :
+    dc_color = '#B71C1C'   
+
+st.subheader('AVG DC POWER', text_alignment= 'center',)
+st.subheader(f'{round(pred[0],2)} watt', text_alignment= 'center')
+
 dia1,dia2 = st.columns(2)
 
 with dia1:
@@ -106,7 +121,7 @@ with dia1:
             title= {
                 'text' : '<b>TEMPERATURE</b>',
                 'font' : {
-                'color' : '#CD5B45',
+                'color' : text_color,
                 'size'  : 24
                 }
                 } ,
@@ -117,15 +132,16 @@ with dia1:
                 'suffix' : ' °C'
                 },
             gauge={
-            'axis' : {'range' : [0, 55], 'tickwidth' :2, 'tickcolor' : 'red', 'tickfont' : {'color' : 'red', 'size' : 14}},
+            'axis' : {'range' : [0, 55], 'tickwidth' :2, 'tickcolor' : 'red', 'tickfont' : 
+                {'color' : bar_color, 'size' : 14}},
             'bar' : {'color' : bar_color},
             'bgcolor' : 'black',
             'borderwidth' : 3,
             'bordercolor' : border_color,
             'threshold': {
-            'line': {'color': "red", 'width': 4},
+            'line': {'color': text_color, 'width': 4},
             'thickness': 0.75,
-            'value': 90
+            'value': temp
         }
             }
         )
@@ -134,6 +150,56 @@ with dia1:
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
     st.plotly_chart(fig, use_container_width=True)
 
+with dia2:
+    
+    if pred[1] < 2400 :
+        bar_color = 'skyblue'
+        text_color = '#1A237E'
+        border_color = 'blue'
+    elif pred[1]  > 4500 and pred[1]  < 7200 :
+        bar_color = 'springgreen'
+        text_color = '#2E7D32'
+        border_color = 'green'
+    else :
+        bar_color = 'orange'
+        text_color = '#B71C1C'
+        border_color = 'red'
+    
+    fig = go.Figure(
+        go.Indicator(
+            mode='gauge+number',
+            title= {
+                'text' : '<b>DAY DC POWER</b>',
+                'font' : {
+                'color' : text_color,
+                'size'  : 24
+                }
+                } ,
+            value= pred[1],
+            domain= {'x' : [0,1], 'y' : [0,1]},
+            number={
+                'font' : {'color' : text_color},
+                'suffix' : ' watt'
+                },
+            gauge={
+            'axis' : {'range' : [0, 7200], 'tickwidth' :2, 'tickcolor' : 'red', 'tickfont' : 
+                {'color' : bar_color, 'size' : 14}
+                },
+            'bar' : {'color' : bar_color},
+            'bgcolor' : 'black',
+            'borderwidth' : 3,
+            'bordercolor' : border_color,
+            'threshold': {
+            'line': {'color': text_color, 'width': 4},
+            'thickness': 0.75,
+            'value': pred[1]
+        }
+            }
+        )
+    )
+    
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+    st.plotly_chart(fig, use_container_width=True)
     
 
 # st.success()
