@@ -7,7 +7,7 @@ import joblib
 import requests
 import plotly.graph_objects as go 
 
-st.set_page_config(page_title='Solar', page_icon='🌞', layout='wide')
+st.set_page_config(page_title='Solar', page_icon='🌞', layout='wide',initial_sidebar_state='collapsed')
 
 st.markdown( '''<style>
             .stApp {
@@ -51,9 +51,9 @@ cities = {
     "Patna": {"lat": 25.5941, "lon": 85.1376}
 }
 
-city = st.sidebar.selectbox('Enter City: ', cities.keys())
 date = st.sidebar.date_input('Enter date :')
 time = st.sidebar.time_input('Enter time :').strftime('%H')
+city = st.sidebar.selectbox('Enter City: ', cities.keys())
 btn = st.sidebar.button('Predict')
 
 st_date = date
