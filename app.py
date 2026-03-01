@@ -26,6 +26,7 @@ st.markdown( '''<style>
                 color : #CD5B45;
             }
             
+            
             </style>
             ''',unsafe_allow_html=True
 )
@@ -88,16 +89,15 @@ with col3 :
     st.subheader(f'{module} °C' )
     
 if pred[0] < 4500 :
-    dc_color = '#1A237E'
+    dc_color = '#4169E1'
     
-elif pred[0] > 4500 and pred[0] < 10000 :
-    dc_color = '#2E7D32'
+elif pred[0] > 4500 and pred[0] < 13000 :
+    dc_color = '#2E8B57'
 else :
-    dc_color = '#B71C1C'   
-
-st.subheader('AVG DC POWER', text_alignment= 'center',)
-st.subheader(f'{round(pred[0],2)} watt', text_alignment= 'center')
-
+    dc_color = 'coral'   
+    
+st.markdown(f"### <span style='color: {dc_color};'><center>Avg DC Power: {round(pred[0],2)} w</center></span>", 
+            unsafe_allow_html=True)
 dia1,dia2 = st.columns(2)
 
 with dia1:
@@ -179,7 +179,7 @@ with dia2:
             domain= {'x' : [0,1], 'y' : [0,1]},
             number={
                 'font' : {'color' : text_color},
-                'suffix' : ' watt'
+                'suffix' : ' w'
                 },
             gauge={
             'axis' : {'range' : [0, 7200], 'tickwidth' :2, 'tickcolor' : 'red', 'tickfont' : 
